@@ -1,0 +1,38 @@
+#!/bin/bash -l
+
+# Account and job name
+#PBS -N strip_skulls
+
+# request the queue (enter the possible names, if omitted, default is the default)
+# this job is going to use the default
+#PBS -q default
+
+# [CHANGE] Set up where to spit out logs 
+# (NOTE: you must have read/write access to these logs. If you weren't the creator or don't have read/write access, the job will fail)
+#PBS -o /dartfs-hpc/rc/lab/M/MeyerM/Collier/EmpOrient/scripts/jobs/logs/strip_skulls.o
+#PBS -e /dartfs-hpc/rc/lab/M/MeyerM/Collier/EmpOrient/scripts/jobs/logs/strip_skulls.e
+
+# request 1 node, 16 cores
+#PBS -l nodes=1:ppn=16
+
+#PBS -l walltime=01:00:00
+
+# mail is sent to you when the job starts and when it terminates or aborts 
+#PBS -m bea
+
+# [CHANGE] specify your email address 
+#PBS -M eleanor.a.collier@dartmouth.edu
+
+# By default, PBS scripts execute in your home directory, not the
+# directory from which they were submitted. The following line
+# places the job in the directory from which the job was submitted. 
+cd $PBS_O_WORKDIR
+
+# [CHANGE] specify script & subjects to run
+SCRIPTDIR="/dartfs-hpc/rc/lab/M/MeyerM/Collier/EmpOrient/scripts/preprocessing/anat"
+SUBJECTS="01 02 03"
+
+CMD="$SCRIPTDIR/1_strip_skulls.sh $SUBJECTS"
+
+echo "Running $CMD"
+exec $CMD
